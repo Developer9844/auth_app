@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>All Posts</h1>
+        <form id="add-post-form">
+            <textarea id="post-content" placeholder="Write something..."></textarea>
+            <button type="submit">Add Post</button>
+        </form>
+        <button id="logout-btn">Logout</button>
+
+
+        <button onclick="window.location.href='/profile'">Profile Settings</button>
+        <div id="posts-container"></div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+
+</html>
