@@ -168,8 +168,6 @@ def handle_posts():
     ])
 
 
-
-
 @app.route("/api/posts/<int:post_id>", methods=["PUT", "DELETE"])
 @jwt_required()
 def modify_post(post_id):
