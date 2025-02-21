@@ -16,7 +16,8 @@ db = mysql.connector.connect(
     host="localhost",
     user="ankush-katkurwar",
     password="Anku$h9844.",
-    database="facebook2")
+    database="facebook2"
+    )
 cursor = db.cursor()
 
 # Database migration

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h2>Welcome, <%= user.full_name %>
+    </h2>
+
+    <% if (error && error.length> 0) { %>
+        <p style="color:red;">
+            <%= error %>
+        </p>
+        <% } %>
+            <h2>Add a New Post</h2>
+            <form action="/dashboard/add-post" method="POST">
+                <textarea name="content" rows="3" cols="50" placeholder="Write your post..." required></textarea>
+                <br>
+                <button type="submit">Post</button>
+            </form>
+            
+            <% if (typeof error !=="undefined" && error) { %>
+                <p style="color:red;">
+                    <%= error %>
+                </p>
+                <% } %>
+            
+                    <% if (typeof success !=="undefined" && success) { %>
+                        <p style="color:green;">
+                            <%= success %>
+                        </p>
+                        <% } %>
+
+            <h3>All Posts</h3>
+            <% if (posts.length> 0) { %>
+                <ul>
+                    <% posts.forEach(post=> { %>
+                        <li><strong>
+                                <%= post.full_name %>
+                            </strong>: <%= post.content %>
+                        </li>
+                        <% }); %>
+                </ul>
+                <% } else { %>
+                    <p>No posts available.</p>
+                    <% } %>
+
+                        <a href="/logout">Logout</a>
+                        <a href="/profile">Profile Settings</a>
+</body>
+
+</html>
