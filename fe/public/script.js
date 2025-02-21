@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const profileForm = document.getElementById("profile-form");
     const addPostForm = document.getElementById("add-post-form");
     const logoutBtn = document.getElementById("logout-btn");
+    const userPostsContainer = document.getElementById("user-posts-container");
 
 
     // Handle Login
@@ -125,6 +126,57 @@ document.addEventListener("DOMContentLoaded", () => {
         // Call fetchPosts immediately when the script runs
         fetchPosts();
 
+        async function fetchUserPosts() {
+            if (!userPostsContainer) return;
+
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("You must be logged in!");
+                window.location.href = "/";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/api/my-posts", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error fetching posts: ${response.status}`);
+                }
+
+                const posts = await response.json();
+                userPostsContainer.innerHTML = "";
+
+                if (posts.length === 0) {
+                    userPostsContainer.innerHTML = "<p>You have no posts yet.</p>";
+                    return;
+                }
+
+                posts.forEach(post => {
+                    const postElement = document.createElement("div");
+                    postElement.classList.add("user-post");
+                    postElement.innerHTML = `
+                <textarea id="edit-post-${post.id}">${post.content}</textarea>
+                <button onclick="updatePost(${post.id})">Update</button>
+                <button onclick="deletePost(${post.id})">Delete</button>
+                <hr>
+            `;
+                    userPostsContainer.appendChild(postElement);
+                });
+
+            } catch (error) {
+                console.error("Error fetching user posts:", error);
+                userPostsContainer.innerHTML = `<p>Error loading posts.</p>`;
+            }
+        }
+        fetchUserPosts()
+        window.fetchUserPosts = fetchUserPosts;
+
         // Handle Add Post
         if (addPostForm) {
             addPostForm.addEventListener("submit", async (e) => {
@@ -223,6 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("An error occurred while updating the profile");
             }
         });
+
+        
     }
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
@@ -233,3 +287,60 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// Update Post
+async function updatePost(postId) {
+    const token = localStorage.getItem("token");
+    const updatedContent = document.getElementById(`edit-post-${postId}`).value;
+
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/api/posts/${postId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: updatedContent })
+        });
+
+        if (response.ok) {
+            alert("Post updated successfully!");
+            fetchUserPosts();  // Refresh posts
+        } else {
+            const result = await response.json();
+            alert(result.message || "Failed to update post");
+        }
+    } catch (error) {
+        console.error("Error updating post:", error);
+        alert("An error occurred while updating the post.");
+    }
+}
+
+// Delete Post
+async function deletePost(postId) {
+    const token = localStorage.getItem("token");
+
+    if (!confirm("Are you sure you want to delete this post?")) return;
+
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/api/posts/${postId}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            alert("Post deleted successfully!");
+            fetchUserPosts();  // Refresh posts
+        } else {
+            const result = await response.json();
+            alert(result.message || "Failed to delete post");
+        }
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        alert("An error occurred while deleting the post.");
+    }
+}
+

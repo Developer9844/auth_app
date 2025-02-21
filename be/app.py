@@ -174,15 +174,24 @@ def handle_posts():
 @jwt_required()
 def modify_post(post_id):
     current_user = get_jwt_identity()
+
+    # Fetch the user's ID
+    cursor.execute("SELECT id FROM users WHERE username = %s", (current_user,))
+    user = cursor.fetchone()
     
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user_id = user[0]  # Extract user ID
+
     if request.method == "PUT":
         data = request.json
         new_content = data.get("content")
 
         # Check if post exists and belongs to user
-        cursor.execute("SELECT user FROM posts WHERE id = %s", (post_id,))
+        cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
         post = cursor.fetchone()
-        if not post or post[0] != current_user:
+        if not post or post[0] != user_id:
             return jsonify({"error": "Unauthorized or post not found"}), 403
 
         cursor.execute("UPDATE posts SET content = %s WHERE id = %s", (new_content, post_id))
@@ -191,9 +200,9 @@ def modify_post(post_id):
 
     elif request.method == "DELETE":
         # Check if post exists and belongs to user
-        cursor.execute("SELECT user FROM posts WHERE id = %s", (post_id,))
+        cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
         post = cursor.fetchone()
-        if not post or post[0] != current_user:
+        if not post or post[0] != user_id:
             return jsonify({"error": "Unauthorized or post not found"}), 403
 
         cursor.execute("DELETE FROM posts WHERE id = %s", (post_id,))
@@ -215,6 +224,26 @@ def get_posts_with_fullname():
     cursor.close()
    
     return jsonify(posts)
+
+
+@app.route("/api/my-posts", methods=["GET"])
+@jwt_required()
+def get_my_posts():
+    current_user = get_jwt_identity()
+    
+    # Get user ID
+    cursor.execute("SELECT id FROM users WHERE username = %s", (current_user,))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    user_id = user[0]
+
+    # Fetch posts
+    cursor.execute("SELECT id, content FROM posts WHERE user_id = %s", (user_id,))
+    posts = cursor.fetchall()
+
+    return jsonify([{"id": row[0], "content": row[1]} for row in posts])
 
 
 if __name__ == "__main__":
