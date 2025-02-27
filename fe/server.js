@@ -50,7 +50,7 @@ app.get('/dashboard', async (req, res) => {
     if (!req.session.user || !req.session.token) return res.redirect('/login');
 
     try {
-        const response = await axios.get(`${API_BASE_URL}/posts`, {
+        const response = await axios.get(`${API_BASE_URL}/posts/full`, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
 
