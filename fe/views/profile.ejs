@@ -3,80 +3,80 @@
 
 <head>
     <title>Profile Settings</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-    <h2>Profile Settings</h2>
-    
-    <% if (error) { %>
-        <p style="color:red;">
-            <%= error %>
-        </p>
-        <% } %>
+    <div class="container">
+        <h2>Profile Settings</h2>
 
-        <% if (typeof success !=="undefined" && success) { %>
-            <p style="color:green;">
-                <%= success %>
+        <% if (error) { %>
+            <p style="color:red;">
+                <%= error %>
             </p>
             <% } %>
 
+                <% if (typeof success !=="undefined" && success) { %>
+                    <p style="color:green;">
+                        <%= success %>
+                    </p>
+                    <% } %>
 
-                    <h3>Update Profile</h3>
-                    <form action="/profile/update" method="POST">
-                        <label>Username:</label>
-                        <input type="text" name="username" value="<%= user.username %>" required>
-                        <br>
-                        <label>Full Name:</label>
-                        <input type="text" name="full_name" value="<%= user.full_name %>" required>
-                        <br>
-                        <label>Bio:</label>
-                        <textarea name="bio"><%= user.bio %></textarea>
-                        <br>
-                        <button type="submit">Update Profile</button>
-                    </form>
+                        <h3>Update Profile</h3>
+                        <form action="/profile/update" method="POST">
+                            <label>Username:</label>
+                            <input type="text" name="username" value="<%= user.username %>" required>
 
-                    <h3>Change Password</h3>
-                    <form action="/profile/change-password" method="POST">
-                        <label>Old Password:</label>
-                        <input type="password" name="old_password" required>
-                        <br>
-                        <label>New Password:</label>
-                        <input type="password" name="new_password" required>
-                        <br>
-                        <button type="submit">Change Password</button>
-                    </form>
+                            <label>Full Name:</label>
+                            <input type="text" name="full_name" value="<%= user.full_name %>" required>
 
-                    <h3>Your Posts</h3>
-                    
-                    <% if (user.posts && user.posts.length> 0) { %>
-                        <ul>
-                            <% user.posts.forEach(post=> { %>
-                                <li>
-                                    <strong>
-                                        <%= post.content %>
-                                    </strong>
-                    
-                                    <!-- Edit Post Form -->
-                                    <form action="/update-post" method="POST" style="display:inline;">
-                                        <input type="hidden" name="post_id" value="<%= post.id %>">
-                                        <input type="text" name="content" value="<%= post.content %>" required>
-                                        <button type="submit">Update</button>
-                                    </form>
-                    
-                                    <!-- Delete Post Form -->
-                                    <form action="/delete-post" method="POST" style="display:inline;">
-                                        <input type="hidden" name="post_id" value="<%= post.id %>">
-                                        <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                                    </form>
-                                </li>
-                                <% }); %>
-                        </ul>
-                        <% } else { %>
-                            <p>No posts available.</p>
-                            <% } %>
+                            <label>Bio:</label>
+                            <textarea name="bio"><%= user.bio %></textarea>
 
-                                <br>
-                                <a href="/dashboard">Back to Dashboard</a>
+                            <button type="submit">Update Profile</button>
+                        </form>
+
+                        <h3>Change Password</h3>
+                        <form action="/profile/change-password" method="POST">
+                            <label>Old Password:</label>
+                            <input type="password" name="old_password" required>
+
+                            <label>New Password:</label>
+                            <input type="password" name="new_password" required>
+
+                            <button type="submit">Change Password</button>
+                        </form>
+
+                        <h3>Your Posts</h3>
+                        <% if (user.posts && user.posts.length> 0) { %>
+                            <ul>
+                                <% user.posts.forEach(post=> { %>
+                                    <li>
+                                        <strong>
+                                            <%= post.content %>
+                                        </strong>
+
+                                        <form action="/update-post" method="POST">
+                                            <input type="hidden" name="post_id" value="<%= post.id %>">
+                                            <input type="text" name="content" value="<%= post.content %>" required>
+                                            <button type="submit">Update</button>
+                                        </form>
+
+                                        <form action="/delete-post" method="POST">
+                                            <input type="hidden" name="post_id" value="<%= post.id %>">
+                                            <button type="submit"
+                                                onclick="return confirm('Are you sure?')">Delete</button>
+                                        </form>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+                            <% } else { %>
+                                <p>No posts available.</p>
+                                <% } %>
+
+                                    <a href="/dashboard">Back to Dashboard</a>
+    </div>
 </body>
+
 
 </html>
