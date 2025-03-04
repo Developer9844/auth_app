@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import mysql.connector
 import datetime
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -11,15 +12,19 @@ bcrypt = Bcrypt(app)
 app.config['JWT_SECRET_KEY'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1YiI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.RSq0eQtMWrxk4xxSiF8kD9B1L_8WExdEy-pCzrwSuYY'
 jwt = JWTManager(app)
 
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_USER = os.getenv("DB_USER", "ankush-katkurwar")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "Anku$h9844.")
+DATABASE = os.getenv("DATABASE", "facebook3")
+
 # Database connection
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="ankush-katkurwar",
-        password="Anku$h9844.",
-        database="facebook2"
+        host=DB_HOST,
+        user=DB_USER,
+        password=DB_PASSWORD,
+        database=DATABASE
     )
-
 
 # Database migration
 def migrate():
