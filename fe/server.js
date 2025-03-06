@@ -2,10 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const axios = require('axios');
+require('dotenv').config;
 
 const app = express();
 const PORT = 3000;
-const API_BASE_URL = 'http://127.0.0.1:5000/api';
+const API_BASE_URL = process.env.API_BASE_URL || 'http://127.0.0.1:5000/api';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
