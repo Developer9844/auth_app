@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: database
+spec:
+  capacity:
+    storage: 10G
+  accessModes:
+    - ReadWriteMany
+  storageClassName: manual
+  hostPath:
+    path: /mnt/database
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: db
+  labels:
+    app: mysql
+spec:
+  resources:
+    requests:
+      storage: 10G
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+
