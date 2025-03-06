@@ -6,7 +6,7 @@ require('dotenv').config;
 
 const app = express();
 const PORT = 3000;
-const API_BASE_URL = process.env.API_BASE_URL || 'http://127.0.0.1:5000/api';
+const API_BASE_URL = process.env.API_BASE_URL || 'http://127.0.0.1:5000';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -23,7 +23,7 @@ app.get('/login', (req, res) => res.render('login', { error: null }));
 app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const response = await axios.post(`${API_BASE_URL}/login`, { username, password });
+        const response = await axios.post(`${API_BASE_URL}/api/login`, { username, password });
         req.session.user = response.data;
         req.session.token = response.data.access_token;
         res.redirect('/dashboard');
@@ -39,7 +39,7 @@ app.get('/register', (req, res) => res.render('register', { error: null }));
 app.post('/register', async (req, res) => {
     try {
         const { username, password, full_name } = req.body;
-        await axios.post(`${API_BASE_URL}/register`, { username, password, full_name });
+        await axios.post(`${API_BASE_URL}/api/register`, { username, password, full_name });
         res.redirect('/login');
     } catch (error) {
         res.render('register', { error: 'Registration failed' });
@@ -51,7 +51,7 @@ app.get('/dashboard', async (req, res) => {
     if (!req.session.user || !req.session.token) return res.redirect('/login');
 
     try {
-        const response = await axios.get(`${API_BASE_URL}/posts/full`, {
+        const response = await axios.get(`${API_BASE_URL}/api/posts/full`, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
 
@@ -68,7 +68,7 @@ app.post('/dashboard/add-post', async (req, res) => {
     const { content } = req.body;
 
     try {
-        await axios.post(`${API_BASE_URL}/posts`,
+        await axios.post(`${API_BASE_URL}/api/posts`,
             { content },
             { headers: { Authorization: `Bearer ${req.session.token}` } }
         );
@@ -86,7 +86,7 @@ app.post('/update-post', async (req, res) => {
     const { post_id, content } = req.body;
 
     try {
-        await axios.put(`${API_BASE_URL}/posts/${post_id}`,
+        await axios.put(`${API_BASE_URL}/api/posts/${post_id}`,
             { content },
             { headers: { Authorization: `Bearer ${req.session.token}` } }
         );
@@ -103,7 +103,7 @@ app.post('/delete-post', async (req, res) => {
     const { post_id } = req.body;
 
     try {
-        await axios.delete(`${API_BASE_URL}/posts/${post_id}`, {
+        await axios.delete(`${API_BASE_URL}/api/posts/${post_id}`, {
             headers: { Authorization: `Bearer ${req.session.token}` }
         });
         res.redirect('/profile'); // Refresh page after deletion
@@ -118,10 +118,10 @@ app.get('/profile', async (req, res) => {
 
     try {
         const [profileResponse, postsResponse] = await Promise.all([
-            axios.get(`${API_BASE_URL}/profile`, {
+            axios.get(`${API_BASE_URL}/api/profile`, {
                 headers: { Authorization: `Bearer ${req.session.token}` }
             }),
-            axios.get(`${API_BASE_URL}/my-posts`, {
+            axios.get(`${API_BASE_URL}/api/my-posts`, {
                 headers: { Authorization: `Bearer ${req.session.token}` }
             })
         ]);
@@ -141,7 +141,7 @@ app.post('/profile/update', async (req, res) => {
 
     const { username, full_name, bio } = req.body;
     try {
-        await axios.put(`${API_BASE_URL}/profile`,
+        await axios.put(`${API_BASE_URL}/api/profile`,
             { username, full_name, bio },
             { headers: { Authorization: `Bearer ${req.session.token}` } }
         );
@@ -160,7 +160,7 @@ app.post('/profile/change-password', async (req, res) => {
 
     const { old_password, new_password } = req.body;
     try {
-        await axios.put(`${API_BASE_URL}/profile`,
+        await axios.put(`${API_BASE_URL}/api/profile`,
             { old_password, new_password },
             { headers: { Authorization: `Bearer ${req.session.token}` } }
         );
