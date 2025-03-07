@@ -128,6 +128,7 @@ app.get('/profile', async (req, res) => {
 
         const user = profileResponse.data;
         user.posts = postsResponse.data; // Attach posts to user object
+        
 
         res.render('profile', { user, error: null, success: null });
     } catch (error) {
@@ -149,6 +150,7 @@ app.post('/profile/update', async (req, res) => {
         req.session.user.username = username;
         req.session.user.full_name = full_name;
         res.render('profile', { user: req.session.user, error: null, success: "Profile updated successfully." });
+        
     } catch (error) {
         console.error("Error updating profile:", error.response ? error.response.data : error.message);
         res.render('profile', { user: req.session.user, error: "Failed to update profile.", success: null });

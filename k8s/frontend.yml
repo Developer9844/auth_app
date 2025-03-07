@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: chat-app-frontend
-        image: docker.io/developer9844/chat-app:frontend_v1.0
+        image: docker.io/developer9844/chat-app:frontend_v3.0
         imagePullPolicy: IfNotPresent
         env:
           - name: API_BASE_URL
-            value: 'http://chat-app-backend-svc.default.svc.cluster.local:5000/api'
+            value: 'http://chat-app-backend-svc.default.svc.cluster.local:5000'
 
         resources:
           limits:

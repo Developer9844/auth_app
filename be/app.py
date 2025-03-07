@@ -15,7 +15,7 @@ jwt = JWTManager(app)
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_USER = os.getenv("DB_USER", "ankush-katkurwar")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "Anku$h9844.")
-DATABASE = os.getenv("DATABASE", "facebook3")
+DATABASE = os.getenv("DATABASE", "facebook_clone")
 
 # Database connection
 def get_db_connection():
@@ -36,16 +36,16 @@ def migrate():
             username VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
             full_name VARCHAR(255),
-            bio TEXT,
-            profile_pic TEXT
+            bio TEXT
         )
     """)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS posts (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            user VARCHAR(255) NOT NULL,
+            user_id INT NOT NULL,
             content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
     """)
     db.commit()
@@ -112,14 +112,13 @@ def profile():
 
     try:
         if request.method == "GET":
-            cursor.execute("SELECT username, full_name, bio, profile_pic FROM users WHERE username = %s", (current_user,))
+            cursor.execute("SELECT username, full_name, bio FROM users WHERE username = %s", (current_user,))
             user = cursor.fetchone()
             if user:
                 return jsonify({
                     "username": user[0], 
                     "full_name": user[1], 
                     "bio": user[2], 
-                    "profile_pic": user[3]
                 })
             return jsonify({"error": "User not found"}), 404
 
@@ -141,9 +140,6 @@ def profile():
                 updates.append("bio = %s")
                 values.append(data["bio"])
             
-            if "profile_pic" in data:
-                updates.append("profile_pic = %s")
-                values.append(data["profile_pic"])
             
             # Handle password update
             if "old_password" in data and "new_password" in data:
