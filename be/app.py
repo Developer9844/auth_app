@@ -6,16 +6,18 @@ import mysql.connector
 import datetime
 import os
 
+DB_HOST = os.environ.get("DB_HOST", "localhost")
+DB_USER = os.environ.get("DB_USER", "ankush-katkurwar")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "Anku$h9844.")
+DATABASE = os.environ.get("DATABASE", "auth_app")
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
+
 app = Flask(__name__)
 CORS(app)
 bcrypt = Bcrypt(app)
-app.config['JWT_SECRET_KEY'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1YiI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.RSq0eQtMWrxk4xxSiF8kD9B1L_8WExdEy-pCzrwSuYY'
+app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 jwt = JWTManager(app)
 
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_USER = os.getenv("DB_USER", "ankush-katkurwar")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "Anku$h9844.")
-DATABASE = os.getenv("DATABASE", "facebook_clone")
 
 # Database connection
 def get_db_connection():
