@@ -1,39 +1,47 @@
-version: '3.8'
-
 services:
   backend:
     build: ./be/.
+    container_name: "auth-app-backend"
     ports:
       - "5000:5000"
     environment:
       - DB_HOST=db
       - DB_USER=root
-      - DB_PASSWORD=ankush123
-      - DATABASE=test_db
+      - DB_PASSWORD=Anku$h9844.
+      - DATABASE=auth_app
+      - JWT_SECRET_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1YiI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.RSq0eQtMWrxk4xxSiF8kD9B1L_8WExdEy-pCzrwSuYY'
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - app_network
 
   frontend:
     build: ./fe/.
+    container_name: "auth-app-frontend"
     ports:
       - "3000:3000"
     depends_on:
       - backend
     environment:
-      - API_BASE_URL=http://backend:5000/api
+      - API_BASE_URL=http://backend:5000
     networks:
       - app_network
 
   db:
     image: mysql
     container_name: "auth-app-db-1"
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=ankush123
-      - MYSQL_DATABASE=test_db
+      - MYSQL_ROOT_PASSWORD=Anku$h9844.
+      - MYSQL_DATABASE=auth_app
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app_network
 
