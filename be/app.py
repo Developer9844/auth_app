@@ -3,13 +3,15 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import mysql.connector
+from dotenv import load_dotenv
 import datetime
 import os
 
-DB_HOST = os.environ.get("DB_HOST", "localhost")
-DB_USER = os.environ.get("DB_USER", "ankush-katkurwar")
-DB_PASSWORD = os.environ.get("DB_PASSWORD", "Anku$h9844.")
-DATABASE = os.environ.get("DATABASE", "auth_app")
+load_dotenv() 
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DATABASE = os.environ.get("DATABASE")
 JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 app = Flask(__name__)
