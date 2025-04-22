@@ -51,9 +51,11 @@ services:
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes: 
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
     depends_on:
       - frontend
     restart: always

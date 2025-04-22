@@ -1,2 +1,3 @@
 be/env
 fe/node_modules
+certs/*
