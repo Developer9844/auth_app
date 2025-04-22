@@ -1,8 +1,8 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 WORKDIR /app
 
-RUN adduser --home /app appuser 
+RUN adduser --disabled-password --home /app appuser 
 
 COPY ./requirements.txt .
 
@@ -17,5 +17,3 @@ USER appuser
 EXPOSE 5000
 
 CMD [ "python3", "app.py" ]
-
-

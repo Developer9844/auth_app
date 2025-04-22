@@ -4,12 +4,16 @@ WORKDIR /app
 
 RUN adduser -D --home /app appuser 
 
+COPY package*.json .
+
+RUN npm install --no-cache
+
 COPY . .
 
 RUN chown -R appuser:appuser /app
 
 USER appuser
 
-RUN npm install
+EXPOSE 3000
 
 CMD [ "node", "server.js" ]
