@@ -10,3 +10,4 @@ https://medium.com/cstech/streaming-data-from-mysql-with-kafka-connect-jdbc-sour
 https://www.digitalocean.com/community/tutorials/how-to-integrate-existing-systems-with-kafka-connect
 
 https://hostman.com/tutorials/install-apache-kafka-on-ubuntu-22-04/
+https://www.elastic.co/search-labs/blog/elasticsearch-apache-kafka-ingest-data
