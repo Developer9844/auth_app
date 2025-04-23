@@ -9,3 +9,4 @@ openssl req -x509 -nodes -days 365 \
 https://medium.com/cstech/streaming-data-from-mysql-with-kafka-connect-jdbc-source-connector-428f4db20b5b
 https://www.digitalocean.com/community/tutorials/how-to-integrate-existing-systems-with-kafka-connect
 
+https://hostman.com/tutorials/install-apache-kafka-on-ubuntu-22-04/
