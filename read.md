@@ -11,3 +11,11 @@ https://www.digitalocean.com/community/tutorials/how-to-integrate-existing-syste
 
 https://hostman.com/tutorials/install-apache-kafka-on-ubuntu-22-04/
 https://www.elastic.co/search-labs/blog/elasticsearch-apache-kafka-ingest-data
+
+
+kafka-broker-api-versions --bootstrap-server localhost:9092
+kafka-topics --list --bootstrap-server localhost:9092
+kafka-console-consumer --topic authapp.auth_app.users --from-beginning --bootstrap-server localhost:9092
+kafka-console-consumer --topic authapp.auth_app.posts --from-beginning --bootstrap-server localhost:9092
+
+curl -d @"mysql-source-connector.json" -H "Content-Type: application/json" -X POST http://localhost:8083/connectors
