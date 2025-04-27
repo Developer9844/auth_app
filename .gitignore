@@ -1,3 +1,4 @@
 be/env
 fe/node_modules
 certs/*
+**__pycache__
