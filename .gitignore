@@ -3,3 +3,4 @@ fe/node_modules
 certs/*
 **__pycache__
 **indices
+**_state/
