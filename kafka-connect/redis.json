@@ -1,0 +1,15 @@
+{
+    "name": "redis-sink",
+    "config": {
+        "connector.class": "com.github.jcustenborder.kafka.connect.redis.RedisSinkConnector",
+        "tasks.max": "1",
+        "topics": "authapp.auth_app.posts",
+        "redis.hosts": "redis:6379",
+        "redis.password": "",
+        "redis.database": 0,
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "key.converter.schemas.enable": "false",
+        "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "value.converter.schemas.enable": "false"
+    }
+}
