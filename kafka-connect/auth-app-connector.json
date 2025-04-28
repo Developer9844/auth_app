@@ -1,0 +1,16 @@
+{
+  "name": "auth-app-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "tasks.max": "1",
+    "database.hostname": "db",
+    "database.port": "3306",
+    "database.user": "root",
+    "database.password": "Ankush9844.",
+    "database.server.id": "2",          
+    "topic.prefix": "authapp",                 
+    "database.include.list": "auth_app",
+    "schema.history.internal.kafka.bootstrap.servers": "kafka:29092",
+    "schema.history.internal.kafka.topic": "schema-changes.auth_app"  
+  }
+}
