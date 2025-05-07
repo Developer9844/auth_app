@@ -31,5 +31,4 @@ def fetch_and_process_data():
     else:
         print("No matching keys found in Redis.")
 
-
 fetch_and_process_data()
