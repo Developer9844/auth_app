@@ -1,4 +1,0 @@
-db_host: "mysql.db.svc.cluster.local"
-db_user: "testUser123"
-db_password: "testPassword"
-database: "test_db"
