@@ -49,27 +49,9 @@ spec:
               exec:
                 command: ["python3", "migrate.py"]
 
-          env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "auth-app.fullname" . }}
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "auth-app.fullname" . }}
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "auth-app.fullname" . }}
-                  key: DB_PASSWORD
-            - name: DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "auth-app.fullname" . }}
-                  key: DATABASE
+          envFrom:
+            - secretRef:
+                name: {{ include "auth-app.fullname" . }}
        
 
 
