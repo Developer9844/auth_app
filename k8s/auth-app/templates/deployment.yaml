@@ -51,7 +51,10 @@ spec:
 
           envFrom:
             - secretRef:
-                name: {{ include "auth-app.fullname" . }}
+                name: {{ .Values.secret }}
+          env:
+            - name: DB_HOST
+              value: {{ .Values.dbHost }}
        
 
 

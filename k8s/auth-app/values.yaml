@@ -20,7 +20,8 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-dbSecrets: "app-db-secret"
+secret: "app-db-secret"
+dbHost: "mysql.db.svc.cluster.local"
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
