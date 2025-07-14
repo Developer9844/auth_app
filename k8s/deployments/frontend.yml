@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: chat-app-frontend
 spec:
-  replicas: 2
+  replicas: 15
   selector:
     matchLabels:
       app: chat-app-frontend
@@ -21,9 +21,12 @@ spec:
             value: 'http://chat-app-backend-svc.default.svc.cluster.local:5000'
 
         resources:
-          limits:
-            memory: "128Mi"
+          requests:
             cpu: "500m"
+            memory: "500Mi"
+            #  limits:
+            #cpu: "500m"
+            #memory: "128Mi"
         ports:
         - containerPort: 3000
 

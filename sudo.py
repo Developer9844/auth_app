@@ -8,10 +8,10 @@ def find_peaks(array):
 
     for x in range(1, len(array)):
         if array[x] * array[x-1] > 0:
-            if peak < 0 and array[x] < peak:
+            if peak < 0 and array[x] < peak:   # both negative
                 peak = array[x]
                 index = x
-            elif peak >= 0 and array[x] > peak:
+            elif peak >= 0 and array[x] > peak:  # both positive
                 peak = array[x]
                 index = x
         else:
@@ -25,6 +25,6 @@ def find_peaks(array):
 array = [1, 4, 2, -2, -9, 10, 2, 12, 2, -4, -4, -4, -4, 2, 6, 7]
 peaks = find_peaks(array)
 
-print(len(array))
+
 print(peaks)
 
