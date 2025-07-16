@@ -6,8 +6,7 @@ phases:
       - echo "Logging to ECR"
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 600748199510.dkr.ecr.us-east-1.amazonaws.com
       - REPOSITORY_URI=600748199510.dkr.ecr.us-east-1.amazonaws.com/dev/chatapp
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - BUILD_TAG=build-$CODEBUILD_BUILD_NUMBER
   
   build:
     commands:
@@ -18,8 +17,8 @@ phases:
   post_build:
     commands:
       - echo "Pushing the Docker image to ECR"
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo "Image $REPOSITORY_URI:$IMAGE_TAG built and pushed successfully"
+      - docker push $REPOSITORY_URI:build-$BUILD_TAG
+      - echo "Image $REPOSITORY_URI:build-$BUILD_TAG built and pushed successfully"
 
 artifacts:
   files:
