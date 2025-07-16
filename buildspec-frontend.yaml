@@ -12,7 +12,7 @@ phases:
     commands:
       - cd ./fe
       - echo "building the docker image"
-      - docker build -t $REPOSITORY_URI:build-$IMAGE_TAG .
+      - docker build -t $REPOSITORY_URI:build-$BUILD_TAG .
 
   post_build:
     commands:
