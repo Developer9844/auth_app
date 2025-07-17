@@ -22,4 +22,6 @@ phases:
 
 artifacts:
   files:
+    - imagedefinitions.json
     - '**/*'
+  base-directory: build
