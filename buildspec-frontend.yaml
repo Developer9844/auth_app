@@ -26,6 +26,7 @@ phases:
       - echo "Image $REPOSITORY_URI:$BUILD_TAG built and pushed successfully"
       - echo Writing imagedefinitions.json...
       - printf '[{"name":"%s", "imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - ls -al imagedefinitions.json
 
 artifacts:
     files: imagedefinitions.json
