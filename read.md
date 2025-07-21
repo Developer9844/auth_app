@@ -19,3 +19,7 @@ kafka-console-consumer --topic authapp.auth_app.users --from-beginning --bootstr
 kafka-console-consumer --topic authapp.auth_app.posts --from-beginning --bootstrap-server localhost:9092
 
 curl -d @"mysql-source-connector.json" -H "Content-Type: application/json" -X POST http://localhost:8083/connectors
+
+
+
+
