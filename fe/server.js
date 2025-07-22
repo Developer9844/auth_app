@@ -13,6 +13,26 @@ app.use(express.static('public'));
 app.use(session({ secret: 'mysecret', resave: false, saveUninitialized: true }));
 app.set('view engine', 'ejs');
 
+
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'healthy' });
+  });
+
+app.get('/live', (req, res) => {
+res.status(200).send('OK');
+});
+
+app.get('/ready', async (req, res) => {
+try {
+    // Add checks like DB, Redis, etc.
+    res.status(200).send('OK');
+} catch (err) {
+    res.status(500).send('NOT READY');
+}
+});
+
+
 // Redirect to login page
 app.get('/', (req, res) => res.redirect('/login'));
 
