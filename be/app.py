@@ -60,6 +60,20 @@ def migrate():
 
 migrate()
 
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify(status="healthy"), 200
+@app.route('/live')
+def liveness():
+    return "OK", 200
+
+@app.route('/ready')
+def readiness():
+    # Add readiness checks here
+    return "OK", 200
+
+
 @app.route("/api/register", methods=["POST"])
 def register():
     data = request.json
