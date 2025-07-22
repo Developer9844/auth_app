@@ -1,152 +1,152 @@
 services:
 
-  frontend:
-    build: ./fe/.
-    container_name: "auth-app-frontend"
-    # ports:
-    #   - "3000:3000"
-    expose:
-      - "5000"
-    depends_on:
-      - backend
-    environment:
-      - API_BASE_URL=http://backend:5000
-    # networks:
-    #   - app_network
+  # frontend:
+  #   build: ./fe/.
+  #   container_name: "auth-app-frontend"
+  #   # ports:
+  #   #   - "3000:3000"
+  #   expose:
+  #     - "5000"
+  #   depends_on:
+  #     - backend
+  #   environment:
+  #     - API_BASE_URL=http://backend:5000
+  #   # networks:
+  #   #   - app_network
 
-  backend:
-    build: ./be/.
-    container_name: "auth-app-backend"
-    # ports:
-    #   - "5000:5000"
-    environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASSWORD=Ankush9844.
-      - DATABASE=auth_app
-      - JWT_SECRET_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1YiI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.RSq0eQtMWrxk4xxSiF8kD9B1L_8WExdEy-pCzrwSuYY'
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: mysql:8.0
-    container_name: "auth-app-db-1"
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=Ankush9844.
-      - MYSQL_DATABASE=auth_app
-    ports:
-      - "3306:3306"
-    command:
-      - --server-id=223344
-      - --log-bin=mysql-bin
-      - --binlog_format=ROW
-      - --binlog_row_image=FULL
-      - --gtid_mode=ON
-      - --enforce-gtid-consistency=ON
-      - --bind-address=0.0.0.0
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # backend:
+  #   build: ./be/.
+  #   container_name: "auth-app-backend"
+  #   # ports:
+  #   #   - "5000:5000"
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_PORT=3306
+  #     - DB_USER=root
+  #     - DB_PASSWORD=Ankush9844.
+  #     - DATABASE=auth_app
+  #     - JWT_SECRET_KEY='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1YiI6IkpvaG5ueSIsIlN1cm5hbWUiOiJSb2NrZXQiLCJFbWFpbCI6Impyb2NrZXRAZXhhbXBsZS5jb20iLCJSb2xlIjpbIk1hbmFnZXIiLCJQcm9qZWN0IEFkbWluaXN0cmF0b3IiXX0.RSq0eQtMWrxk4xxSiF8kD9B1L_8WExdEy-pCzrwSuYY'
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  # db:
+  #   image: mysql:8.0
+  #   container_name: "auth-app-db-1"
+  #   restart: always
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=Ankush9844.
+  #     - MYSQL_DATABASE=auth_app
+  #   ports:
+  #     - "3306:3306"
+  #   command:
+  #     - --server-id=223344
+  #     - --log-bin=mysql-bin
+  #     - --binlog_format=ROW
+  #     - --binlog_row_image=FULL
+  #     - --gtid_mode=ON
+  #     - --enforce-gtid-consistency=ON
+  #     - --bind-address=0.0.0.0
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
-  nginx:
-    image: nginx:alpine
-    container_name: nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes: 
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro
-    depends_on:
-      - frontend
-    restart: always
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: nginx-proxy
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes: 
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certs:/etc/nginx/certs:ro
+  #   depends_on:
+  #     - frontend
+  #   restart: always
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:latest
+  #   container_name: zookeeper
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
 
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-      - "9094:9094"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  # kafka:
+  #   image: confluentinc/cp-kafka:latest
+  #   container_name: kafka
+  #   depends_on:
+  #     - zookeeper
+  #   ports:
+  #     - "9092:9092"
+  #     - "9094:9094"
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  kafka-connect:
-    image: confluentinc/cp-kafka-connect-base:7.9.0
-    container_name: kafka-connect
-    platform: linux/amd64
-    depends_on:
-      - zookeeper
-      - kafka
-    ports:
-      - 8083:8083
-    environment:
-      CONNECT_BOOTSTRAP_SERVERS: "kafka:29092"
-      CONNECT_REST_PORT: 8083
-      CONNECT_GROUP_ID: kafka-connect
-      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
-      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
-      CONNECT_STATUS_STORAGE_TOPIC: _connect-status
-      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
-      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
-      CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
-      CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
+  # kafka-connect:
+  #   image: confluentinc/cp-kafka-connect-base:7.9.0
+  #   container_name: kafka-connect
+  #   platform: linux/amd64
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #   ports:
+  #     - 8083:8083
+  #   environment:
+  #     CONNECT_BOOTSTRAP_SERVERS: "kafka:29092"
+  #     CONNECT_REST_PORT: 8083
+  #     CONNECT_GROUP_ID: kafka-connect
+  #     CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+  #     CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+  #     CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+  #     CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+  #     CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+  #     CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+  #     CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+  #     CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+  #     CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
+  #     CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+  #     CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"
+  #     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+  #     CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+  #     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+  #     CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
 
-    command:
-      - bash
-      - -c
-      - |
-        echo "Installing Connectors"
-        confluent-hub install --no-prompt debezium/debezium-connector-mysql:latest
-        confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:latest
-        confluent-hub install --no-prompt jcustenborder/kafka-connect-redis:latest
-        echo "Launching Kafka Connect worker"
-        /etc/confluent/docker/run &
-        sleep infinity
+  #   command:
+  #     - bash
+  #     - -c
+  #     - |
+  #       echo "Installing Connectors"
+  #       confluent-hub install --no-prompt debezium/debezium-connector-mysql:latest
+  #       confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:latest
+  #       confluent-hub install --no-prompt jcustenborder/kafka-connect-redis:latest
+  #       echo "Launching Kafka Connect worker"
+  #       /etc/confluent/docker/run &
+  #       sleep infinity
 
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    ports:
-      - "8080:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: Local Kafka
-      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: "kafka:29092"
-      KAFKA_CLUSTERS_0_AUTO_OFFSET_RESET: earliest
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     KAFKA_CLUSTERS_0_NAME: Local Kafka
+  #     KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: "kafka:29092"
+  #     KAFKA_CLUSTERS_0_AUTO_OFFSET_RESET: earliest
 
-  redis:
-    image: redis/redis-stack-server
-    hostname: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
+  # redis:
+  #   image: redis/redis-stack-server
+  #   hostname: redis
+  #   container_name: redis
+  #   ports:
+  #     - "6379:6379"
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
+    image: elasticsearch:8.15.1
     container_name: elasticsearch-8.15.1
     environment:
       - node.name=elasticsearch
@@ -159,7 +159,7 @@ services:
       - 9200:9200
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.15.1
+    image: kibana:8.15.1
     container_name: kibana-8.15.1
     ports:
       - 5601:5601
@@ -167,7 +167,14 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
 
-
+  logstash:
+    image: logstash:8.15.1
+    container_name: logstash
+    volumes:
+      - ./logstash/config:/usr/share/logstash/config
+    ports:
+      - "5000:5000"
+    command: logstash -f /usr/share/logstash/config/logstash.conf
 
 
 # networks:
