@@ -27,6 +27,7 @@ phases:
       - cd ..
       - echo Writing imagedefinitions.json...
       - printf '[{"name":"%s", "imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$BUILD_TAG > imagedefinitions.json
+      - ls -al imagedefinations.json
       - cat imagedefinitions.json
 
 artifacts:
